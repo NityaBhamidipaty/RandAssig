@@ -12,6 +12,10 @@ uniform("uni.dat", 1000000);
 //Gaussian random numbers
 gaussian("gau.dat", 1000000);
 
+//Generating T = U_1 + U_2
+//Triangular distribution
+triangular("tri.dat",1000000);
+
 //Mean of uniform
 printf("mean(U) = %lf\n",mean("uni.dat"));
 
@@ -34,8 +38,7 @@ other("other.dat", 1000000);
 // //Variance of V
 // printf("variance(V) = %lf\n",variance("other.dat"));
 
-
-//cdf expression 1 - e^{-x/2} x >0, 0 otherwise => theoretical
+equiprobable("equi.dat", 1000000);
 
 return 0;
 

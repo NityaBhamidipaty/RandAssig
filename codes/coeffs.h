@@ -11,8 +11,10 @@ double **matmul(double **a, double **b, int m, int n, int p);
 double **transpose(double **a,  int m, int n);
 void uniform(char *str, int len);
 void gaussian(char *str, int len);
+void triangular(char *str, int len);
 double mean(char *str);
 void other(char *str, int len);
+void equiprobable(char *str, int len);
 
 double variance(char *filename);
 //End function declaration
@@ -302,3 +304,29 @@ void other(char *str, int len){
 }
 
 //End function for generating other (V = -2ln(1-U)) random numbers
+
+
+void triangular(char *str, int len){
+  FILE* fp = fopen(str, "w");
+  int i;
+  double x;
+  for(i = 0;i < len;i++){
+    x = (double)rand()/RAND_MAX + (double)rand()/RAND_MAX;
+    fprintf(fp,"%lf\n",x);
+  }
+  fclose(fp);
+}
+
+
+void equiprobable(char *str, int len){
+  FILE* fp = fopen(str, "w");
+  int i;
+  int x;
+  for(i=0;i < len;i++){
+    x = (double)rand()/RAND_MAX*2;
+    if (x == 0) 
+      x = -1;
+    fprintf(fp, "%lf\n", floor(x));
+  }
+  fclose(fp);
+}
