@@ -84,7 +84,7 @@
 \renewcommand\thesectiondis{\arabic{section}}
 \renewcommand\thesubsectiondis{\thesectiondis.\arabic{subsection}}
 \renewcommand\thesubsubsectiondis{\thesubsectiondis.\arabic{subsubsection}}
-
+\providecommand{\gauss}[2]{\mathcal{N}\ensuremath{\left(#1,#2\right)}}
 % correct bad hyphenation here
 \hyphenation{op-tical net-works semi-conduc-tor}
 
@@ -197,6 +197,7 @@ columns=fullflexible
 %\makeatletter
 %\@addtoreset{figure}{problem}
 %\makeatother
+
 \makeatletter
 \@addtoreset{table}{section}
 \makeatother
@@ -210,9 +211,7 @@ columns=fullflexible
 
 
 \title{%Convex Optimization in Python
-	\logo{
 	Random Numbers
-	}
 }
 %\title{
 %	\logo{Matrix Analysis through Octave}{\begin{center}\includegraphics[scale=.24]{tlc}\end{center}}{}{HAMDSP}
@@ -278,14 +277,19 @@ columns=fullflexible
 
 % make the title area
 \maketitle
+
+\tableofcontents
+% \bigskip
+
+
 % 
 % \renewcommand{\thefigure}{\theenumi}
 % \renewcommand{\thetable}{\theenumi}
-% 
+
 % \begin{abstract}
-% This manual provides a simple introduction to the generation of random numbers
-% \end{abstract}
-%%
+%     This manual provides a simple introduction to the generation of random numbers
+%     \end{abstract}
+
 \section{Uniform Random Numbers}
 Let $U$ be a uniform random variable between 0 and 1.
 \begin{enumerate}[label=\thesection.\arabic*
@@ -311,7 +315,7 @@ wget https://github.com/NityaBhamidipaty/RandAssig/blob/main/codes/cdf_plot.py
 \end{lstlisting}
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\columnwidth]{uni_cdf.pdf}
+    \includegraphics[width=\columnwidth]{figs/uni_cdf.pdf}
     \caption{CDF of U}
     \label{fig:uni_cdf}
 \end{figure}
@@ -423,7 +427,7 @@ wget https://github.com/NityaBhamidipaty/RandAssig/blob/main/codes/cdf_plot.py
 \end{lstlisting}
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\columnwidth]{gau_cdf.pdf}
+    \includegraphics[width=\columnwidth]{./figs/gau_cdf.pdf}
     \caption{CDF of X}
     \label{fig:gau_cdf}
 \end{figure}
@@ -447,7 +451,7 @@ wget https://github.com/NityaBhamidipaty/RandAssig/blob/main/codes/pdf_plot.py
 \end{lstlisting}
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\columnwidth]{gauss_pdf.pdf}
+    \includegraphics[width=\columnwidth]{./figs/gauss_pdf.pdf}
     \caption{PDF of $X$}
     \label{fig:gau_pdf}
 \end{figure}
@@ -517,7 +521,7 @@ wget https://github.com/NityaBhamidipaty/RandAssig/blob/main/codes/cdf_plot.py
 \end{lstlisting}
 \begin{figure}
     \centering
-    \includegraphics[width=\columnwidth]{other_cdf.pdf}
+    \includegraphics[width=\columnwidth]{./figs/other_cdf.pdf}
     \caption{CDF of $V$}
     \label{fig:other_cdf}
 \end{figure}
@@ -564,5 +568,301 @@ Hence,
                 1 - e^{-\frac{x}{2}} & x>0
     \end{cases}
 \end{align}
+\end{enumerate}
+\section{Triangular Distribution}
+
+\begin{enumerate}[label=\thesection.\arabic*
+    ,ref=\thesection.\theenumi]
+\item Generate 
+\begin{align}
+    T &= U_1 + U_2
+\end{align}
+\solution
+\begin{lstlisting}
+wget https://github.com/NityaBhamidipaty/RandAssig/blob/main/codes/main.c
+\end{lstlisting}
+\item Find the CDF of T\\
+\solution\\
+The CDF (\ref{fig:cdf_T}) is plotted using 
+\begin{lstlisting}
+wget https://github.com/NityaBhamidipaty/RandAssig/blob/main/codes/cdf_plot.py
+\end{lstlisting}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{./figs/tri_cdf.pdf}
+    \caption{CDF of T}
+    \label{fig:cdf_T}
+\end{figure}
+\item Find the PDF of T\\
+\solution
+The PDF (\ref{fig:pdf_T}) is plotted using
+\begin{lstlisting}
+weget https://github.com/NityaBhamidipaty/RandAssig/blob/main/codes/pdf_plot.py
+\end{lstlisting}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{./figs/tri_pdf.pdf}
+    \caption{PDF of $T$}
+    \label{fig:pdf_T}
+\end{figure}
+\item Find the theoretical expressions of CDF an PDF of T.\\
+\solution
+\begin{align}
+    f_T(t) &= \int_{-\infty}^{\infty}f_{U_2}(x)f_{U_1}(t-x)\,dx\\
+    &= \int_{0}^{1}f(x)f(t-x)\,dx
+\end{align}
+If $t\in(0,1)$
+\begin{align}
+    f_T(t) &= \int_{0}^{t}1\times1\,dx\\
+    &= t
+\end{align}
+If $t\in(1,2)$
+\begin{align}
+    f_T(t) &= \int_{t-1}^{1}1\times1\,dx\\
+    &= 2 -t
+\end{align}
+Hence,
+\begin{align}
+    f_T(t) &= \begin{cases}
+    t & t\in(0,1)\\
+    2-t & t\in(1,2)\\
+    0 & \text{otherwise}
+    \end{cases}
+\end{align}
+\begin{align}
+    F_T(t) &= \int_{-\infty}^{t}f_T(t)\,dt\\
+    \end{align}
+    \begin{align}
+    F_T(t) &= \begin{cases}
+    0 & t\le0\\
+    \frac{t^2}{2} & t\in(0,1)\\
+    \frac{-t^2}{2} +2t -1 & t\in(1,2)\\
+    1         & t\ge2
+    \end{cases}
+\end{align}
+\end{enumerate}
+\section{Maximum Likelihood}
+\begin{enumerate}[label=\thesection.\arabic*
+    ,ref=\thesection.\theenumi]
+\item Generate equiprobable $X \in \{1, -1\}$\\
+\solution
+\begin{lstlisting}
+weget ...
+\end{lstlisting}
+\item Generate 
+\begin{align}
+    Y &= AX + N
+\end{align}
+where $A = 5$ dB and $N \sim \mathcal{N}(0,1)$\\
+\solution\\
+\begin{lstlisting}
+weget ...
+\end{lstlisting}
+\item Plot $Y$ using scatter plot\\
+\solution\\
+The plot \ref*{fig:scatter_y} is plotted using
+\begin{lstlisting}
+    weget ...
+\end{lstlisting}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{./figs/scatter.png}
+    \label{fig:scatter_y}
+\end{figure}
+\item Guess how to estimate $X$ from $Y$\\
+\solution\\
+Estimated value of $X = \hat{X}$
+
+\begin{align}
+   \hat{X} &= \begin{cases} -1 & Y<0\\ 1 & Y\ge \end{cases}
+\end{align} 
+
+
+\item Find 
+\begin{equation}
+	P_{e|0} = \pr{\hat{X} = -1|X=1}
+\end{equation}
+and 
+\begin{equation}
+	P_{e|1} = \pr{\hat{X} = 1|X=-1}
+\end{equation}
+\solution
+\begin{align}
+	P_{e|0} &= \pr{\hat{X} = -1|X=1} = 0.49999\\
+	P_{e|1} &= \pr{\hat{X} = 1|X=-1} = 0.50075
+\end{align}
+\begin{lstlisting}
+    weget ...
+\end{lstlisting}
+\item  Find $P_e$ assuming that $X$ has equiprobable symbols.\\
+\solution
+\begin{align}
+    P_e &= P(X=1)P_{e|0} + P(X = -1)P_{e|1}\\
+    &= \frac{1}{2}(P_{e|0} + P_{e|1})\\
+    &= \frac{1}{2}(0.49999+0.50075)\\
+    &= 0.50037
+\end{align}
+\item Verify by plotting  the theoretical $P_e$ with respect to $A$ from 0 to 10 dB.  \\
+\solution
+\begin{align}
+    P_e &= P_{e|0}P(X = 1) + P_{e|1}P(X=-1)\\
+    &= \frac{1}{2}(P_{e|0}+P_{e|1})
+\end{align}
+\begin{align}
+    P_{e|0} &= P(Y\le0|X=1)\\
+    &= P(AX+N \le 0|X=1)\\
+    &= P(A+N\le0)\\
+    &= P(N\le-A)\\
+    &= P(N>A) 
+\end{align}
+\begin{align}
+    P_{e|1} &= P(Y>0|X=-1)\\
+    &= P(AX+N > 0|X=-1)\\
+    &= P(-A+N>0)\\
+    &= P(N>A)
+\end{align}
+\begin{align}
+    P_e &= P(N>A)=Q(A) 
+\end{align}
+Plotted using code
+\begin{lstlisting}
+    weget ...
+\end{lstlisting}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{./figs/pevsa.pdf}
+    \caption{$P_e(A)$ vs $A$}
+    \label{fig:pevsa}
+\end{figure}
+\item Now, consider a threshold $\delta$  while estimating $X$ from $Y$. Find the value of $\delta$ that maximizes the theoretical $P_e$.\\
+\solution\\
+\begin{align}
+    \hat{X} &= \begin{cases} 1 & Y>\delta\\
+        -1 & Y<\delta
+    \end{cases}
+\end{align}
+\begin{align}
+    P_{e|0} &= P(Y < \delta | X = 1)\\
+    &= P(AX+N < \delta|X=1)\\
+    &= P(A+N < \delta)\\
+    &= P(N < \delta - A)\\
+    &= P(N >  A - \delta)\\
+    &= Q(A-\delta)
+\end{align}
+\begin{align}
+    P_{e|1} &= P(Y > \delta | X = -1)\\
+    &= P(-A+N > \delta|X=-1)\\
+    &= P(-A+N > \delta)\\
+    &= P(N > \delta + A)\\
+    &= Q(A+\delta)
+\end{align}
+\begin{align}
+    P_e &= \frac{1}{2}(Q(A+\delta)+Q(A-\delta))
+\end{align}
+Differentiating wrt $\delta$ to find maximum
+\begin{equation}
+    \frac{d Q(x)}{d x} &= -\frac{1}{\sqrt{2\pi}}e^{\frac{-x^2}{2}}
+\end{equation}
+\begin{align}
+    \frac{d P_e}{d\delta} &= \frac{1}{2}(\frac{1}{\sqrt{2\pi}}e^{-\frac{(A-\delta)^2}{2}} - \frac{1}{\sqrt{2\pi}}e^{-\frac{(A+\delta)^2}{2}})\\
+    &= 0\\
+    \implies \delta = 0 \text{ or }\\
+    A = 0 , \delta\in\mathbb{R}
+\end{align}
+Verifying it is maximum 
+\item Repeat the above exercise when 
+\begin{align}
+    p_{X}(0) = p
+\end{align}
+\solution\\
+\begin{align}
+    P_e &= (1-p)Q(A+\delta)+Q(A-\delta)p
+\end{align}
+Differentiating
+\begin{align}
+    \frac{d P_e}{d\delta} &= p\frac{1}{\sqrt{2\pi}}e^{-\frac{(A-\delta)^2}{2}} - \frac{1}{\sqrt{2\pi}}e^{-\frac{(A+\delta)^2}{2}}(1-p)\\
+    &= 0\\
+\end{align}
+\begin{align}
+    pe^{-\frac{(\delta-A)^2}{2}} &= (1-p)e^{-\frac{(A+\delta)^2}{2}}\\
+    \implies \delta = \frac{1}{2A}\ln\brak{\frac{1-p}{p}}
+\end{align}
+\item Repeat the above exercise using the MAP criterion.\\
+\solution
+\begin{align}
+    P(X = 1|Y = y) &= \frac{P(Y = y, X = 1)P(X =1)}{P(Y=y)}\\
+    &= \frac{P(A+N=y)p}{f_Y(y)}\\
+    &= \frac{f_N(y-A)p}{f_Y(y)}
+\end{align}
+\begin{align}
+    P(X = -1|Y = y) &= \frac{P(Y = y, X = -1)P(X =-1)}{P(Y=y)}\\
+    &= \frac{P(-A+N=y)(1-p)}{f_Y(y)}\\
+    &= \frac{f_N(y+A)(1-p)}{f_Y(y)}
+\end{align}
+For max error
+\begin{align}
+    \frac{f_N(y+A)(1-p)}{f_Y(y)} &=  \frac{f_N(y-A)p}{f_Y(y)}\\
+    e^{-Ay}(1-p) &=  e^{Ay}p\\
+    \implies y &= \frac{1}{2A}\ln\brak{\frac{1-p}{p}} 
+\end{align}
+\end{enumerate}
+\section{Gaussian to Other}
+\begin{enumerate}[label=\thesection.\arabic*
+    ,ref=\thesection.\theenumi]
+\item
+Let $X_1 \sim  \gauss{0}{1}$ and $X_2 \sim  \gauss{0}{1}$. Plot the CDF and PDF of
+%
+\begin{equation}
+V = X_1^2 + X_2^2
+\end{equation}
+\solution
+The code for plotting the cdf and pdf
+\begin{lstlisting}
+    weget ...
+\end{lstlisting}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{./figs/squgau_cdf.pdf}
+    \label{fig:vcdf}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{./figs/squgau_pdf.pdf}
+    \label{fig:vpdf}
+\end{figure}
+\item
+If
+%
+\begin{equation}
+F_{V}(x) = 
+\begin{cases}
+1 - e^{-\alpha x} & x \geq 0 \\
+0 & x < 0,
+\end{cases}
+\end{equation}
+%
+find $\alpha$.
+%
+\item
+Plot the CDF and PDf of
+\begin{equation}
+A = \sqrt{V}
+\end{equation}
+\solution
+The code to plot the cdf and pdf
+\begin{lstlisting}
+    weget ... 
+\end{lstlisting}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{./figs/sqrsqugau_cdf.pdf}
+    \label{fig:apdf}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=\columnwidth]{./figs/sqrsqugau_pdf.pdf}
+    \label{fig:apdf}
+\end{figure}
+\end{enumerate}
 \end{enumerate}
 \end{document}

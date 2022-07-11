@@ -14,9 +14,11 @@ void gaussian(char *str, int len);
 void triangular(char *str, int len);
 double mean(char *str);
 void other(char *str, int len);
+void equiy(char *str, int len, double A);
 void equiprobable(char *str, int len);
-
+void sqgaussian(char *str, int len);
 double variance(char *filename);
+void sqsqgaussian(char *str,int len);
 //End function declaration
 
 
@@ -259,23 +261,23 @@ double variance(char *filename){
 //Defining the function for generating Gaussian random numbers
 void gaussian(char *str, int len)
 {
-int i,j;
-double temp;
-FILE *fp;
+  int i,j;
+  double temp;
+  FILE *fp;
 
-fp = fopen(str,"w");
-//Generate numbers
-for (i = 0; i < len; i++)
-{
-temp = 0;
-for (j = 0; j < 12; j++)
-{
-temp += (double)rand()/RAND_MAX;
-}
-temp-=6;
-fprintf(fp,"%lf\n",temp);
-}
-fclose(fp);
+  fp = fopen(str,"w");
+  //Generate numbers
+  for (i = 0; i < len; i++)
+  {
+  temp = 0;
+  for (j = 0; j < 12; j++)
+  {
+  temp += (double)rand()/RAND_MAX;
+  }
+  temp-=6;
+  fprintf(fp,"%lf\n",temp);
+  }
+  fclose(fp);
 
 }
 //End function for generating Gaussian random numbers
@@ -302,21 +304,21 @@ void other(char *str, int len){
   fclose(fp);
   return;
 }
-
 //End function for generating other (V = -2ln(1-U)) random numbers
-
 
 void triangular(char *str, int len){
   FILE* fp = fopen(str, "w");
   int i;
   double x;
+  double u1,u2;
   for(i = 0;i < len;i++){
-    x = (double)rand()/RAND_MAX + (double)rand()/RAND_MAX;
+    u1 = (double)rand()/RAND_MAX;
+    u2 = (double)rand()/RAND_MAX;
+    x = u1+ u2;
     fprintf(fp,"%lf\n",x);
   }
   fclose(fp);
 }
-
 
 void equiprobable(char *str, int len){
   FILE* fp = fopen(str, "w");
@@ -324,9 +326,89 @@ void equiprobable(char *str, int len){
   int x;
   for(i=0;i < len;i++){
     x = (double)rand()/RAND_MAX*2;
-    if (x == 0) 
+    if (floor(x) == 0) {
       x = -1;
+    fprintf(fp, "%lf\n", (float)x);}
+  else{
     fprintf(fp, "%lf\n", floor(x));
   }
+  }
   fclose(fp);
+}
+
+void equiy(char *str, int len, double A){
+
+  FILE* fp = fopen(str, "w");
+  FILE* f = fopen("equiy_ber.dat", "w");
+
+  int i, j;
+  double gau, ber, uni, x, temp;
+  for(i=0;i<len;i++){
+
+    temp = 2*(double)rand()/RAND_MAX;
+    temp = floor(temp);
+
+    if(temp == 0){
+      ber = -1.0;
+    }
+    else {
+      ber = temp;
+    }
+
+    uni = 0.0;
+    for(j = 0;j < 12;j++){
+      uni += (double)rand()/RAND_MAX;
+    }
+    gau = uni - 6;
+
+    x = A*ber + gau;
+    fprintf(f, "%lf\n", ber);
+    fprintf(fp, "%lf\n", x);
+  }
+  fclose(fp);
+  fclose(f);
+}
+
+void sqgaussian(char *str, int len) {
+  FILE* fp = fopen(str, "w");
+  int i,j;
+  double g1,g2,x;
+  for(i=0;i<len;i++){
+    g1 = g2 = 0;
+  for (j = 0; j < 12; j++){
+    g1+= (double)rand()/RAND_MAX;
+    g2+= (double)rand()/RAND_MAX;
+  }
+    g1-=6;
+    g2-=6;
+    x = g1*g1 + g2*g2;
+
+    fprintf(fp, "%lf\n", x);
+
+  }
+
+  fclose(fp);
+}
+
+void sqsqgaussian(char *str,int len){
+    FILE* fp = fopen(str, "w");
+  int i,j;
+  double g1,g2,x,a;
+  for(i=0;i<len;i++){
+    g1 = g2 = 0;
+  for (j = 0; j < 12; j++){
+    g1+= (double)rand()/RAND_MAX;
+    g2+= (double)rand()/RAND_MAX;
+  }
+    g1-=6;
+    g2-=6;
+    x = g1*g1 + g2*g2;
+    a = sqrt(x);
+
+    fprintf(fp, "%lf\n", a);
+
+  }
+
+  fclose(fp);
+
 }
